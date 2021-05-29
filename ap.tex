@@ -22,6 +22,9 @@
 
 \newcommand{\real}{\mathbb{R}}
 
+\newcommand{\REVISED}{\begin{center} \LARGE REVISED DOWN TO HERE \end{center}}
+\newcommand{\MOVED}[1][equation]{\begin{center} [#1 moved] \end{center}}
+
 \begin{document}
 
 \title{A Philosophical Look at Aster Models}
@@ -57,7 +60,8 @@ Aster models are regression models.  In some senses they are
 quite like linear models (LM), which include multiple linear regression
 and analysis of variance (explained in many textbooks, for example,
 \citealp{weisberg} and \citealp{oehlert}), and generalized
-linear models (GLM) \citep{mccullagh-nelder}.  In regression models the objective
+linear models \citep[GLM;][]{mccullagh-nelder}.
+In regression models the objective
 is to model the conditional distribution of the response vector $y$ given
 predictor data $x$ (the structure of which does not matter).
 Aster models have the same objective.  In LM and GLM, conditional on $x$
@@ -182,8 +186,8 @@ of modeling in which \eqref{eq:glm} is generalized to \label{foot:affine}
 \end{equation}
 where $a$ is a known vector, called the \emph{offset vector},
 and this formula is
-also used (rarely) with GLM.  The offset term $a$ is not needed for most
-GLM and aster models and we ignore it here.  When \eqref{eq:gam} is used
+also used (rarely) with LM and GLM.  The offset term $a$ is not needed for most
+LM, GLM, and aster models and we ignore it here.  When \eqref{eq:gam} is used
 instead of \eqref{eq:glm} the proper term is ``affine'' rather than ``linear''
 for this change-of-parameter.}
 In aster
@@ -2228,6 +2232,17 @@ computer implementation.
 \end{itemize}
 All of these points are involved in making aster models work the way they do.
 
+\section*{Acknowledgments}
+
+The impetus for this technical report was helping a philosopher,
+Emily Grosholz, get up to speed on aster models in aid of writing a paper
+on them \citep{grosholz}.  But the process went both ways.  Questions and
+comments from Emily led to large improvements in this technical report.
+
+\bibliography{tpa}
+
+\appendix
+
 \section{Statistical Models and Their Interpretation}
 
 We close with a ``post-discussion discussion'' of an important point that often
@@ -2510,18 +2525,7 @@ or confidence intervals for what parameters should be computed to provide
 a clear and convincing scientific interpretation.  The job is only started
 when the ``best'' statistical model is found.
 
-\section*{Acknowledgments}
-
-The impetus for this technical report was helping a philosopher,
-Emily Grosholz, get up to speed on aster models in aid of writing a paper
-on them \citep{grosholz}.  But the process went both ways.  Questions and
-comments from Emily led to large improvements in this technical report.
-
-\bibliography{tpa}
-
 \end{document}
-
-\begin{center} \LARGE REVISED DOWN TO HERE \end{center}
 
 ISSUES
 
@@ -2587,3 +2591,6 @@ in principle, calculate the probability that the interval contains the truth
 $\theta^*$, this probability, being derived from $f_\theta$ being a function
 of $\theta$.
 
+New TODO
+
+ * mention zero-inflated Poisson
