@@ -9,6 +9,8 @@
 \usepackage{natbib}
 \usepackage{url}
 
+\bibliographystyle{charlie}
+
 \newcommand{\inner}[1]{\langle #1 \rangle}
 \newcommand{\set}[1]{\{\, #1 \,\}}
 \newcommand{\abs}[1]{\lvert #1 \rvert}
@@ -28,19 +30,20 @@
 
 \section{Introduction} \label{sec:intro}
 
-Aster models \citep*{gws,aster2} are statistical models designed especially
+Aster models \citep*{aster1,aster2,reaster} are statistical models designed
+especially
 for life history analysis of plants and animals.
 
 Aster models are parametric statistical models.  In some senses they are
 quite ordinary statistical models.  The theory of aster models is just
-the theory of likelihood inference \citep{fisher,severini} and
+the theory of likelihood inference \citep{fisher1922,severini} and
 the theory of exponential families of distributions
-\citep{barndorff,brown,thesis}.
+\citep{barndorff-nielsen,brown,geyer-thesis}.
 Given an aster model and data, we use the method
 of maximum likelihood for parameter estimation; we use likelihood ratio
 tests for model comparison; and we use confidence intervals based on
 the asymptotic distribution of the maximum likelihood estimator (MLE).
-Details are given in \citet {gws};
+Details are given in \citet {aster1};
 see also Section~\ref{sec:efficiency} below.
 
 The theory mentioned in the preceding paragraph is known to all statisticians,
@@ -54,7 +57,7 @@ Aster models are regression models.  In some senses they are
 quite like linear models (LM), which include multiple linear regression
 and analysis of variance (explained in many textbooks, for example,
 \citealp{weisberg} and \citealp{oehlert}), and generalized
-linear models (GLM) \citep{mccullagh}.  In regression models the objective
+linear models (GLM) \citep{mccullagh-nelder}.  In regression models the objective
 is to model the conditional distribution of the response vector $y$ given
 predictor data $x$ (the structure of which does not matter).
 Aster models have the same objective.  In LM and GLM, conditional on $x$
@@ -172,7 +175,7 @@ canonical parameters are unrestricted, see footnote~\ref{foot:restrict}.}
 
 The ``linear'' in aster models comes from the fact that, just as in GLM,
 parameters other than means are modeled linearly
-\eqref{eq:glm}.\footnote{Actually \citet{gws} describe a more general type
+\eqref{eq:glm}.\footnote{Actually \citet{aster1} describe a more general type
 of modeling in which \eqref{eq:glm} is generalized to \label{foot:affine}
 \begin{equation} \label{eq:gam}
    \eta = a + M \beta,
@@ -201,9 +204,9 @@ parameters.  Such a competitor could not have all properties of aster models;
 see Section~\ref{sec:discuss} below.}
 Instead, exponential family theory implies that the mean
 vector $\mu$ is a multivariate strictly monotone function of $\eta$
-\citep[p.~121]{barndorff}.
+\citep[p.~121]{barndorff-nielsen}.
 The notion of a multivariate monotone function can be characterized in several
-different ways \citep[Chapter~12]{raw}; here is one.
+different ways \citep[Chapter~12]{rockafellar-wets}; here is one.
 Suppose $\eta_1$ and $\eta_2$ are two different allowed values of the linear
 predictor parameter vector and $\mu_1$ and $\mu_2$ are the corresponding
 values of the mean vector.  Then
@@ -309,7 +312,7 @@ variable or a constant) has at most one predecessor and the graph is
 goes around in a loop.  Such a graph is called
 a \emph{forest} in graph theory.
 
-\citet{gws} formalize this notion as follows.\footnote{\citet{gws} actually
+\citet{aster1} formalize this notion as follows.\footnote{\citet{aster1} actually
 formalize a more general class of aster models in which groups of variables
 are allowed to have joint conditional distributions given their predecessors
 (which are still single variables).  This generalization has not yet been
@@ -425,7 +428,7 @@ connected components), and each is different from the others.
 
 However, in all applications of aster models that have been done so far
 all individuals have the same graphical structure and the current version
-of the aster software \citep{package}
+of the aster software \citep{aster-package}
 encourages users to think this way.  In all papers
 about aster models that have been written so far the graphs shown refer
 to one individual, and it is assumed that all individuals have the
@@ -433,7 +436,7 @@ same graphical structure (in the full graph, never shown, all maximal
 connected components are isomorphic subgraphs, and what is shown is
 just one of these subgraphs).
 
-% \citet{gws} actually describe a more complex graphical structure than the
+% \citet{aster1} actually describe a more complex graphical structure than the
 % one described here, but that more complex structure is not implemented in
 % the current version of the aster software.  What is described in this section
 % is aster models users can currently use.
@@ -535,8 +538,8 @@ By convention, a sum having zero terms is defined to be zero.
 Hence $y_{p(j)} = 0$ implies $y_j = 0$ with probability one.
 
 The ``predecessor is sample size'' property has the following consequence.
-Define\footnote{These definitions differ from those in \citet{gws} and the
-documentation for the R package \texttt{aster} \citep{package}.  They used
+Define\footnote{These definitions differ from those in \citet{aster1} and the
+documentation for the R package \texttt{aster} \citep{aster-package}.  They used
 $\tau_j$ instead of $\mu_j$ and defined $\xi_j$ to
 be \eqref{eq:conditional-means} rather than \eqref{eq:xi}.  A referee objected
 to defining $\xi_j$ to be \eqref{eq:conditional-means} because
@@ -799,7 +802,7 @@ Since each arrow in the graph is allowed to have a different exponential
 family distribution, some may be discrete distributions (Bernoulli, Poisson,
 zero-truncated Poisson) and some may be continuous (normal).  However,
 $y_j$ that are predecessor variables must be nonnegative-integer-valued
-because they are sample sizes for their successors.\footnote{\citet{gws}
+because they are sample sizes for their successors.\footnote{\citet{aster1}
 note that if the successor is infinitely divisible, for example, Poisson
 or normal, then the predecessor can be positive-real-valued, but this
 generalization has not been used in aster models
@@ -809,7 +812,7 @@ can be associated with continuous distributions.
 
 \subsection{Reparameterization} \label{sec:geyer-great-idea}
 
-Now we come to what is the only completely new idea in \citet{gws}.
+Now we come to what is the only completely new idea in \citet{aster1}.
 The log likelihood \eqref{eq:logl-cond} does not have exponential family form
 \eqref{eq:logl}.  Each term has this form, but their sum does not, because of
 both $y_j$ and $y_{p(j)}$ being random in some terms.
@@ -836,7 +839,7 @@ joint exponential family distribution of the data are
    \qquad j \in J,
 \end{equation}
 which are the terms in square brackets in \eqref{eq:rewrite} that are the
-coefficients of the $y_j$.  \citet{gws} observe that \eqref{eq:theta-to-phi}
+coefficients of the $y_j$.  \citet{aster1} observe that \eqref{eq:theta-to-phi}
 is an invertible change-of-parameter, because \eqref{eq:theta-to-phi} can
 be solved for $\theta_j$ giving
 \begin{equation} \label{eq:phi-to-theta}
@@ -941,7 +944,7 @@ larger graphs; if we were to repeat the calculations above for the graph
 fit on one page.  However, this reparameterization is very systematic
 and easily handled by the
 computer program that does aster models
-\citep{package}.  Users do not need to know these formulas; the computer
+\citep{aster-package}.  Users do not need to know these formulas; the computer
 deals with them.  We show them only for readers who want a concrete example.
 
 Now we have put the log likelihood of an aster model in the exponential
@@ -1003,7 +1006,7 @@ are
 $$
    \partial^2 c(\varphi) / \partial \varphi_j \partial \varphi_k
 $$
-\citep[Theorem~8.1]{barndorff}.  The identities \eqref{eq:cum-one}
+\citep[Theorem~8.1]{barndorff-nielsen}.  The identities \eqref{eq:cum-one}
 and \eqref{eq:cum-two} have a number of important consequences.  First
 (at least for aster models where the cumulant functions have known expressions),
 they allow probabilistic calculations about means and variances, which may
@@ -1018,7 +1021,7 @@ functions of other components and eliminated.  Thus we can always arrange
 that the distribution of the canonical statistic vector $y$ is non-degenerate
 (not concentrated on a hyperplane), in which case the variance matrix in
 \eqref{eq:cum-two} is positive definite, which in turn implies that the
-cumulant function is strictly convex \citep[Theorem~2.14]{raw}.
+cumulant function is strictly convex \citep[Theorem~2.14]{rockafellar-wets}.
 
 Consider the map $h$ between canonical parameter values $\varphi$ and mean
 values $\mu$ defined by
@@ -1052,7 +1055,7 @@ convex, and strictly concave if $- f$ is strictly convex.  Here $q$ is
 strictly concave because $- q$ is strictly convex,
 because $\nabla^2 c(\varphi)$ is positive definite.}
 which in turn implies the maximizer $\varphi^*$ of $q$ is unique if it
-exists \citep[Theorem~2.6]{raw}.  From calculus we know that the first
+exists \citep[Theorem~2.6]{rockafellar-wets}.  From calculus we know that the first
 derivative is zero at the maximum, so by \eqref{eq:qfoo-one} $\varphi^*$
 is a solution of
 $$
@@ -1080,7 +1083,7 @@ the corresponding one-parameter conditional exponential family.
 
 An aster model has four parameterizations that we have introduced so far:
 conditional and unconditional mean value parameter vectors $\xi$ and $\mu$
-and what \citet{gws} call conditional and unconditional canonical parameter
+and what \citet{aster1} call conditional and unconditional canonical parameter
 vectors $\theta$ and $\varphi$.
 
 In Section~\ref{sec:sample-size} we established that the change of parameter
@@ -1237,11 +1240,11 @@ Thus the log likelihood \eqref{eq:logl-beta} is a strictly concave function
 and the MLE $\hat{\beta}$, the maximizer of \eqref{eq:logl-beta} is unique
 if it exists (from exponential family theory developed
 in Section~\ref{sec:convex}).\footnote{The MLE need not exist.  Conditions
-for when it does not were first described by \citet{barndorff} and generalized
-in the author's unpublished thesis \citep{thesis}.  They involve a fascinating
+for when it does not were first described by \citet{barndorff-nielsen} and generalized
+in the author's unpublished thesis \citep{geyer-thesis}.  They involve a fascinating
 interplay of the geometry of convex polyhedra, the geometry of exponential
 family log likelihood functions, linear programming, and general statistical
-theory.  A recent paper \citep{gdor} gives a complete computational solution
+theory.  A recent paper \citep{geyer-gdor} gives a complete computational solution
 for when the MLE does not exist and describes what to do when it does not.
 That paper is only about GLM, but does point the way toward corresponding
 theory for aster models.\label{foot:barndorff-complete}}
@@ -1313,7 +1316,7 @@ $M^T \mu$ with the MLE $\hat{\mu}$ plugged in for the parameter vector $\mu$.
 
 % There is a beautiful mathematical duality between canonical statistics
 % and canonical parameters of exponential families explained in Chapter~1
-% of \citet{thesis} and this same duality holds between expectations of
+% of \citet{geyer-thesis} and this same duality holds between expectations of
 % canonical statistics, which are mean value parameters $\mu = E_\varphi(y)$,
 % and canonical parameters $\varphi$.
 
@@ -1438,7 +1441,7 @@ to minus infinity as $\varphi$ goes to the boundary
 of its set of allowed values, and this implies the MLE for $\beta$ is still
 a solution of $\nabla l(\beta) = 0$, and the MLE for $\mu$ still satisfies the
 ``observed = expected'' property $M^T y = M^T \hat{\mu}$
-\citep[Corollary~9.6]{barndorff}.
+\citep[Corollary~9.6]{barndorff-nielsen}.
 Optimization software for finding $\hat{\beta}$ need not handle explicit
 constraints; it need only avoid steps outside
 the set of allowed $\beta$ values by shortening such steps until they don't
@@ -1446,7 +1449,7 @@ go outside.}
 
 \subsection{More on Monotonicity} \label{sec:moron}
 
-\citet{gws} also consider what they call \emph{conditional aster models}
+\citet{aster1} also consider what they call \emph{conditional aster models}
 defined by $\theta = M \beta$ as opposed to \emph{unconditional aster models}
 defined by $\varphi = M \beta$.  Conditional aster models do not
 behave as well statistically as unconditional aster models and have been little
@@ -1612,7 +1615,7 @@ relationship between the two scales --- just an arbitrary function with no
 simple properties --- then there would be no way to interpret our models.
 
 There is a simple consequence of multivariate monotonicity that is sometimes
-presented in its place \citep[discussion section]{gws}: if one canonical parameter is increased (the rest being held fixed), then the corresponding mean value
+presented in its place \citep[discussion section]{aster1}: if one canonical parameter is increased (the rest being held fixed), then the corresponding mean value
 parameter is increased (the other mean value parameters change too but can go
 any which way).  This statement does not contain the full content of
 multivariate monotonicity and cannot replace it for mathematical derivations,
@@ -1625,7 +1628,7 @@ users should know about the submodel canonical statistic vector $M^T y$.
 
 \subsection{Sufficiency} \label{sec:sufficient}
 
-\citet{fisher} introduced not only the method of maximum likelihood but also
+\citet{fisher1922} introduced not only the method of maximum likelihood but also
 the notion of sufficiency.  A statistic (function of the data that does not
 involve parameters) is \emph{sufficient} if the conditional distribution of
 the data given the statistic does not depend on the parameter, that is,
@@ -1652,7 +1655,7 @@ sometimes the canonical statistic of an exponential family is called
 the canonical \emph{sufficient} statistic, although the ``sufficient'' is
 redundant (every canonical statistic is sufficient).
 
-Sufficiency may seem a pedantic distinction, but before \citet{fisher},
+Sufficiency may seem a pedantic distinction, but before \citet{fisher1922},
 no one had identified this notion nor were there any methods of estimation
 in common use that obeyed the principle of sufficiency.  Hence every
 methodology introduced before 1922 was either (in hindsight) wrong or was
@@ -1769,7 +1772,7 @@ of fitness landscapes introduced in the preceding section.
 In footnote~\ref{foot:land} we derived the submodel canonical sufficient
 vector.  An earlier methodology for estimating fitness landscapes, or, more
 precisely, the best quadratic approximation (BQA) to fitness landscapes, was
-introduced by \citet{la}.  This method uses LM rather than aster to estimate
+introduced by \citet{lande-arnold}.  This method uses LM rather than aster to estimate
 the fitness landscape.  If fitness satisfied the assumptions for LM, that
 the conditional distribution for fitness given phenotypic trait covariate
 values is homoscedastic normal, then the sufficiency argument applied to that
@@ -1778,14 +1781,14 @@ sufficient statistics $t_k(y)$, $k = 1$, $\ldots$, 10 that are the sufficient
 statistics for the aster model.  This is because the two models agree about
 what fitness is (as a function of the data $y$), because they both use
 a quadratic model, and because both are exponential family models.
-So aster modelers agree completely with \citet{la} about the sufficient
+So aster modelers agree completely with \citet{lande-arnold} about the sufficient
 dimension reduction map.  The only disagreement is about the statistical model:
-the LM used by \citet{la} is often grossly wrong for fitness landscapes
+the LM used by \citet{lande-arnold} is often grossly wrong for fitness landscapes
 whereas aster models may have no apparent wrongness.
 
 \subsection{Efficiency} \label{sec:efficiency}
 
-\citet{fisher} introduced not only the method of maximum likelihood and the
+\citet{fisher1922} introduced not only the method of maximum likelihood and the
 notion of sufficiency but also the notion of efficiency.  The efficiency
 of an estimator $\hat{\varphi}$ of a scalar parameter $\varphi$ is the expected
 squared error
@@ -1847,7 +1850,7 @@ $$
    I(\varphi) = E_\varphi\{ - \nabla^2 l(\varphi) \},
 $$
 which is called the \emph{Fisher information matrix}, because it too was
-introduced by \citet{fisher}.
+introduced by \citet{fisher1922}.
 For a general exponential family of distributions, and in particular for
 a saturated aster model, this simplifies to
 $$
@@ -1858,18 +1861,18 @@ this simplifies to
 \begin{equation} \label{eq:fisher-information}
    I(\beta) = M^T \nabla^2 c(M \beta) M
 \end{equation}
-\citep[Section~3.2]{gws}.
+\citep[Section~3.2]{aster1}.
 So for exponential families of distributions in general and aster models
 in particular we know that the asymptotic distribution of the MLE
 $\hat{\beta}$ is normal with mean $\beta$ (the true unknown parameter value)
 and variance $I(\beta)^{-1}$ (inverse Fisher information).
 The \emph{asymptotic efficiency} is this asymptotic variance of the MLE
 $I(\beta)^{-1}$.  The asymptotic normal distribution of other parameters
-can be derived via the delta method \citet[Section~3.3]{gws}.
+can be derived via the delta method \citet[Section~3.3]{aster1}.
 
 It is a remarkable fact about statistical estimation that maximum likelihood
 estimates are as efficient as it is possible for an estimator to be.  This
-fact was also first surmised by \citet{fisher}.  It is also referred to as
+fact was also first surmised by \citet{fisher1922}.  It is also referred to as
 the \citeauthor{cramer}-Rao lower bound.\footnote{Rao was a student of Fisher.
 \citet{cramer} was the first recognizably modern textbook of theoretical
 statistics and included perhaps the first truly rigorous proof of the
@@ -1880,7 +1883,7 @@ property of maximum likelihood estimators (they are most efficient) is not
 quite correct without conditions.  A large part of the mathematical statistics
 in the twentieth century was devoted to proving asymptotic normality of MLE
 under weaker and weaker conditions and to weakening the conditions under
-which MLE were efficient. \Citet[Sections~5.3, 5.5, 8.5, and~8.6]{vdv} gives
+which MLE were efficient. \Citet[Sections~5.3, 5.5, 8.5, and~8.6]{van-der-vaart} gives
 the current state of the theory (but is not easy to read).
 
 Asymptotic efficiency is a very abstract property.  It is a property of an
@@ -2186,7 +2189,7 @@ information as a simple (for the computer) expression
 and through it the asymptotic distribution of the MLE and resulting
 hypothesis tests and confidence intervals.
 Any generalization of aster models other than those already
-considered in \citet{gws} and mentioned in various footnotes
+considered in \citet{aster1} and mentioned in various footnotes
 (\ref{foot:affine}, \ref{foot:group}, \ref{foot:infinitely-divisible},
 \ref{foot:barndorff-complete}, \ref{foot:restrict}) in this technical report
 would lose (as far as we can see) at least one of the the properties that
@@ -2246,11 +2249,11 @@ integration over so-called measurable spaces (abstract sets equipped with
 sigma-algebras).  It is so high that no one attempts to teach this theory
 to undergraduates or master's students.  This abstract integration theory
 is only taught in Ph.~D. level courses in probability, theoretical statistics,
-and real and functional analysis (from textbooks like \citealp{fristedt}
+and real and functional analysis (from textbooks like \citealp{fristedt-gray}
 and \citealp{rudin}).  Consequently, pre-1933 notions of
 probability and expectation are still taught in all universities in courses
 designed for undergraduates and master's students
-(from textbooks like \citealp{casella}).  Most scientists who use
+(from textbooks like \citealp{casella-berger}).  Most scientists who use
 probability and statistics are exposed to them in such courses.
 Call this theory ``master's level probability theory'' to give it a name
 (all of the probability theory in this technical report is ``master's level'').
@@ -2460,7 +2463,7 @@ but ``these sorts of explanations'' (reifying parameters)
 ``are what's expected.''  That reifying parameters is just wrong
 is never directly confronted.
 
-Returning to aster models, \citet{gws}, \citet{aster2}, and \citet{aster3}
+Returning to aster models, \citet{aster1}, \citet{aster2}, and \citet{aster3}
 are careful to avoid reifying parameters, so much so that
 a referee of \citet{aster3} complained that more explanation of ``what the
 parameters mean'' was needed.  When one understands that the parameters
@@ -2480,7 +2483,7 @@ be very careful, as we saw in the discussion of Example~2 of \citet{aster2}
 (Section~\ref{sec:discuss} above).  What \citet{aster2} did in that example
 was use confidence intervals for mean value parameters as the basis of
 their scientific interpretation.  This was also done in the example in
-\citet{gws}.  In Example~1 of \citet{aster2} the parameter of scientific
+\citet{aster1}.  In Example~1 of \citet{aster2} the parameter of scientific
 interest was the population growth rate $\lambda$ which is a function of
 the mean value parameter vector $\mu$ through the ``stable age equation''
 so the principle of invariance of maximum likelihood estimates
@@ -2514,167 +2517,7 @@ Emily Grosholz, get up to speed on aster models in aid of writing a paper
 on them \citep{grosholz}.  But the process went both ways.  Questions and
 comments from Emily led to large improvements in this technical report.
 
-\begin{thebibliography}{}
-
-\bibitem[Barndorff-Nielsen(1978)]{barndorff}
-Barndorff-Nielsen, O.~E. (1978).
-\newblock \emph{Information and Exponential Families}.
-\newblock John Wiley, Chichester.
-
-\bibitem[Brown(1986)]{brown}
-Brown, L.~D. (1986).
-\newblock \emph{Fundamentals of Statistical Exponential Families: with
-  Applications in Statistical Decision Theory}.
-\newblock Institute of Mathematical Statistics, Hayward, CA.
-
-\bibitem[Casella and Berger(2001)]{casella}
-Casella, G. and Berger, R.~L. (2001).
-\newblock \emph{Statistical Inference}, 2nd ed.
-\newblock Pacific Grove, CA: Duxbury.
-
-\bibitem[Cram\'{e}r(1946)]{cramer}
-Cram\'{e}r, H. (1946).
-\newblock \emph{Mathematical Methods of Statistics}.
-\newblock Princeton University Press.
-
-\bibitem[Fisher(1922)]{fisher}
-Fisher, R.~A. (1922).
-\newblock On the mathematical foundations of theoretical statistics.
-\newblock \emph{Philosophical Transactions of the Royal Society of London.
-    Series A}, \textbf{222}, 309--368.
-
-\bibitem[Fristedt and Gray(1996)]{fristedt}
-Fristedt, B.~E. and Gray, L.~F. (1996).
-\newblock \emph{A Modern Approach to Probability Theory}.
-\newblock Boston: Birkh\"{a}user.
-
-\bibitem[Geyer(1990)]{thesis}
-Geyer, C.~J. (1990).
-\newblock Likelihood and exponential families.
-\newblock Ph.D. thesis, University of Washington.
-\newblock \url{http://purl.umn.edu/56330}.
-
-\bibitem[Geyer(2009a)]{gdor}
-Geyer, C.~J. (2009a).
-\newblock Likelihood inference in exponential families and directions of
-    recession.
-\newblock \emph{Electronic Journal of Statistics}, \textbf{3}, 259--289
-    (electronic).
-
-\bibitem[Geyer(2009b)]{package}
-Geyer, C.~J. (2009b).
-\newblock R package aster: Aster models, version 0.7-7.
-\newblock If the R statistical computing environment \citep{rcore}
-has already been installed, then this package is installed
-by the R command \verb@install.packages("aster")@ on any computer.
-
-\bibitem[Geyer et al.(2007)Geyer, Wagenius and Shaw]{gws}
-Geyer, C.~J., Wagenius, S. and Shaw, R.~G. (2007).
-\newblock Aster models for life history analysis.
-\newblock \emph{Biometrika}, \textbf{94}, 415--426.
-
-\bibitem[Grosholz(submitted)]{grosholz}
-Grosholz, E. (submitted).
-\newblock Studying populations without molecular biology: Aster models and
-    a new argument against reductionism.
-
-\bibitem[H\'{a}jek(2007)]{hajek}
-H\'{a}jek, A. (2007).
-\newblock Interpretations of probability.
-\newblock \emph{Stanford Encyclopedia of Philosophy}.
-\newblock \url{http://plato.stanford.edu/}.
-
-\bibitem[Jaynes(1978)]{jaynes}
-Jaynes, E.~T. (1978).
-\newblock Where do we stand on maximum entropy?
-\newblock In \emph{The Maximum Entropy Formalism}, Ed. R.~D. Levine and
-    M. Tribus, pp. 15–-118.
-\newblock MIT Press, Cambridge, MA.
-
-\bibitem[Kolmogorov(1933)]{kolmogorov-foundations}
-Kolmogorov, A.~N. (1933).
-\newblock \emph{Grundbegriffe der Wahrscheinlichkeitsrechnung}.
-\newblock Springer.
-\newblock English translation (1950): \emph{Foundations of the
-    theory of probability}. Chelsea.
-
-\bibitem[Lande and Arnold(1983)]{la}
-Lande, R., and Arnold, S.~J. 1983.
-\newblock The measurement of selection on correlated characters.
-\newblock \emph{Evolution}, \textbf{37}, 1210--1226.
-
-\bibitem[Lauritzen(1996)]{lauritzen}
-Lauritzen, S.~L. (1996).
-\newblock \emph{Graphical Models}.
-\newblock Oxford University Press, New York.
-
-\bibitem[McCullagh and Nelder(1989)]{mccullagh}
-McCullagh, P. and Nelder, J.~A. (1989).
-\newblock \emph{Generalized Linear Models}, 2nd ed.
-\newblock Chapman and Hall, London.
-
-% \bibitem[Mitchell-Olds and Shaw(1987)]{ms}
-% Mitchell-Olds, T., and Shaw, R.~G. 1987.
-% \newblock Regression analysis of natural selection: Statistical inference
-%     and biological interpretation.
-% \newblock \emph{Evolution}, \textbf{41}, 1149--1161.
-
-\bibitem[Oehlert(2000)]{oehlert}
-Oehlert, G.~W. (2000).
-\newblock \emph{A First Course in Design and Analysis of Experiments}.
-\newblock New York: W.~H. Freeman.
-
-\bibitem[R Development Core Team(2009)]{rcore}
-R Development Core Team (2009).
-\newblock R: A language and environment for statistical computing.
-\newblock R Foundation for Statistical Computing, Vienna, Austria.
-\newblock \url{http://www.R-project.org}.
-
-\bibitem[Rockafellar and Wets(2004)]{raw}
-Rockafellar, R.~T. and Wets, R. J.-B. (2004).
-\newblock \emph{Variational Analysis}, corr.\ 2nd printing.
-\newblock Berlin: Springer-Verlag.
-
-\bibitem[Rudin(1986)]{rudin}
-Rudin, W. (1986).
-\newblock \emph{Real and Complex Analysis}, 3rd ed.
-\newblock New York: McGraw-Hill.
-
-\bibitem[Severini(2001)]{severini}
-Severini, T.~A. (2001).
-\newblock \emph{Likelihood Methods in Statistics}.
-\newblock Oxford: Oxford University Press.
-
-\bibitem[Shaw et al.(2008)Shaw, Geyer, Wagenius, Hangelbroek and
-    Etterson]{aster2}
-Shaw, R. G., Geyer, C. J., Wagenius, S., Hangelbroek, H. H., and
-    Etterson, J. R. (2007)
-\newblock Unifying life history analysis for inference of fitness
-    and population growth.
-\newblock \emph{American Naturalist}, \textbf{172}, E35--E47.
-
-\bibitem[Shaw and Geyer(submitted)]{aster3}
-Shaw, R. G. and Geyer, C. J. (submitted).
-\newblock Inferring fitness landscapes.
-\newblock Submitted to \emph{Evolution}.
-
-\bibitem[Talbott(2008)]{talbott}
-Talbott, W. (2008).
-\newblock Bayesian Epistemology.
-\newblock \emph{Stanford Encyclopedia of Philosophy}.
-\newblock \url{http://plato.stanford.edu/}.
-
-\bibitem[van der Vaart(2000)]{vdv}
-van der Vaart, A.~W. (2000).
-\newblock \emph{Asymptotic Statistics}
-\newblock Cambridge University Press.
-
-\bibitem[Weisberg(2005)]{weisberg}
-Weisberg, S. (2005).
-\newblock \emph{Applied Linear Regression}, 3rd ed.
-\newblock Wiley, New York.
-
-\end{thebibliography}
+\bibliography{tpa}
 
 \end{document}
 
