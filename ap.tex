@@ -2525,6 +2525,1282 @@ or confidence intervals for what parameters should be computed to provide
 a clear and convincing scientific interpretation.  The job is only started
 when the ``best'' statistical model is found.
 
+\section{Exponential Families of Distributions and Their Interpretation}
+
+\subsection{Exponential Families} \label{sec:expfam}
+
+We will use the following definition \citep{geyer-gdor}.
+A statistical model is an \emph{exponential family of distributions} if it has
+a log likelihood of the form
+\begin{equation} \label{eq:logl}
+   l(\theta) = \langle y, \theta \rangle - c(\theta)
+\end{equation}
+where
+\begin{itemize}
+\item $y$ is a vector-valued statistic, which is called
+   the \emph{canonical statistic},
+\item $\theta$ is a vector-valued parameter, which is called
+   the \emph{canonical parameter},
+\item $c$ is a real-valued function, which is called
+   the {cumulant function}, and
+\item $\langle \,\cdot\,, \,\cdot\, \rangle$ denotes a bilinear
+   form that places the vector space where $y$ takes values and the vector
+   space where $\theta$ takes values in duality.
+\end{itemize}
+
+In equation \eqref{eq:logl} we have used the rule that additive terms
+in the log likelihood that do not contain the parameter may be dropped.
+Any such terms have been dropped in \eqref{eq:logl}.
+
+You may object to the angle brackets notation as unfamiliar and not
+what you saw in some class you took and prefer some notation like
+$\sum_i y_i \theta_i$ or
+$(y, \theta)$ or $y \cdot \theta$ or $y^T \theta$ or $\theta^T y$ or one
+of the latter with little t or prime for transpose.
+In your humble author's opinion, the angle brackets are superior because
+they make it clear that $\langle y, y \rangle$
+or $\langle \theta, \theta \rangle$ is always obviously wrong,
+whereas $y^T y$ or $\theta^T \theta$ or the same in any other notation
+is not obviously wrong.
+The angle brackets notation comes from functional analysis.
+
+Although we usually say ``the'' canonical statistic, ``the'' canonical parameter,
+and ``the'' cumulant function, these are not uniquely defined:
+\begin{itemize}
+\item any one-to-one affine function of a canonical statistic vector is another
+   canonical statistic vector,
+\item any one-to-one affine function of a canonical parameter vector is another
+   canonical parameter vector, and
+\item any real-valued affine function plus a cumulant function is another
+   cumulant function.
+\end{itemize}
+(see Section~\ref{sec:casm} below for the definition of affine function).
+
+These possible changes of statistic, parameter, or cumulant function are not
+algebraically independent.  Changes to one may require changes to the others
+to keep a log likelihood of the form \eqref{eq:logl} above.
+
+Usually no fuss is made about this nonuniqueness.  One fixes a choice
+of canonical statistic, canonical parameter, and cumulant function
+and leaves it at that.
+
+The cumulant function may not be defined by \@ref(eq:logl) above
+on the whole vector space where $\theta$ takes values.  In that case
+it can be extended to this whole vector space by
+\begin{equation} \label{eq:cumfun}
+   c(\theta) = c(\psi) + \log\left\{
+   E_\psi\bigl( e^{\langle y, \theta - \psi\rangle} \bigr) \right\}
+\end{equation}
+where $\theta$ varies while $\psi$ is fixed at
+a possible canonical parameter value, and
+the expectation and hence $c(\theta)$ are assigned
+the value $\infty$ for $\theta$ such that the expectation does not exist.
+
+The family is \emph{full} if its canonical parameter space is
+\begin{equation} \label{eq:full}
+   \Theta = \{\, \theta : c(\theta) < \infty \,\}
+\end{equation}
+and a full family is \emph{regular} if its canonical parameter space is an open
+subset of the vector space where $\theta$ takes values.
+
+Almost all exponential families used in real applications are full and regular.
+So-called \emph{curved exponential families} (smooth non-affine submodels of
+full exponential families) are not full.
+Constrained exponential families \citep{geyer-constrained} are not full.
+A few exponential families used in spatial statistics are full but not regular
+\citep{geyer-moller}.
+
+Many people use ``natural'' everywhere this document uses ``canonical''.
+In this we are following \citet{barndorff-nielsen}.
+
+Many people also use an older terminology that says a statistical model
+is \emph{in the} exponential family, where we say a statistical model
+is \emph{an} exponential family.  Thus the older terminology says \emph{the} exponential
+family is the collection of all of what the newer terminology calls
+exponential families.  The older terminology names a useless
+mathematical object, a heterogeneous collection of statistical models not
+used in any application.
+The newer terminology names an important property of statistical models.
+If a statistical model is a regular full exponential family, then it
+has all of the properties discussed here.
+If a statistical model is an exponential family (not necessarily full or
+regular), then it has many of the properties discussed here.
+Presumably, that is the reason for the newer terminology.
+In this we are again following \citep{barndorff-nielsen}.
+
+\subsection{Mean Value Parameters}
+
+The reason why the cumulant function has the name it has is because it
+is related to the cumulant generating function (CGF).
+A cumulant generating function is the logarithm of a moment generating
+function (MGF).
+Derivatives of an MGF evaluated at zero give moments.
+Derivatives of a CGF evaluated at zero give
+\emph{cumulants} \citep{wiki:cumulant}, which
+are polynomial functions of moments and vice versa.
+
+Using \eqref{eq:cumfun}, the MGF for an exponential family
+with log likelihood \eqref{eq:logl} is given by
+$$
+   M_\theta(t) = E_\theta(e^{t y}) = e^{c(\theta + t) - c(\theta)}
+$$
+provided this formula defines an MGF, which it does if and only if it
+is finite for $t$ in a neighborhood of zero, which happens if and only if
+$\theta$ is in the interior of
+the full canonical parameter space \eqref{eq:full}.
+
+So the cumulant generating function is
+$$
+   K_\theta(t) = c(\theta + t) - c(\theta)
+$$
+provided $\theta$ is in the interior of $\Theta$.
+
+It is easy to see that derivatives of $K_\theta$ evaluated at zero
+are derivatives of $c$ evaluated at $\theta$.
+So derivatives of $c$ evaluated at $\theta$ are cumulants.
+
+We will be only interested in the first two cumulants
+\begin{align}
+   E_\theta(y) & = \nabla c(\theta)
+   \label{eq:cumfun-first-derivative}
+   \\
+   \mathop{\rm var}\nolimits_\theta(y) & = \nabla^2 c(\theta)
+   \label{eq:cumfun-second-derivative}
+\end{align}
+[@barndorff-nielsen, Theorem 8.1].
+
+Hence for any $\theta$ in the interior of $\Theta$, the corresponding
+probability distribution has moments and cumulants of all orders.
+In particular, every distribution in a regular full exponential family
+has moments and cumulants of all orders and the mean and variance are
+given by the formulas above.
+
+Conversely, any distribution whose canonical parameter value is on the
+boundary of the full canonical parameter space does not have a moment
+generating function or a cumulant generating function, and no moments or
+cumulants need exist.
+
+The canonical parameterization is not always identifiable.
+It is identifiable if and only if the canonical statistic vector
+is not concentrated
+on a hyperplane in the vector space where it takes values
+\citep[Theorem~1]{geyer-gdor}.
+It is always possible to choose an identifiable canonical parameterization
+but not always convenient \citep{geyer-gdor}.
+
+The means of distributions in a regular full exponential family
+always constitute an identifiable parameterization
+\citep[Theorem~2]{notes-5421-expfam-i}.
+
+The mean value parameterization of a regular full exponential family is
+just as good as the canonical parameterization.  Since cumulant functions
+are infinitely differentiable, the transformation from canonical to mean
+value parameters is infinitely differentiable.  If the canonical
+parameterization is chosen so it is identifiable, then the inverse function
+theorem of real analysis says the inverse mapping is infinitely
+differentiable too.
+(See also Section~\ref{sec:multivariate-monotonicity} below.)
+
+In elementary applications mean value parameters are preferred.
+When we introduce the binomial and Poisson distributions we use mean
+value parameters.  It is only when we get to generalized linear models
+with binomial or Poisson response that we need canonical parameters.
+When we introduce the multinomial distribution we use mean value parameters.
+It is only when we get to hierarchical log-linear models for categorical
+data that we need canonical parameters.
+
+\subsection{Sufficient Dimension Reduction}
+
+Nowadays, there is much interest in [sufficient dimension reduction
+in regression](https://en.wikipedia.org/wiki/Sufficient_dimension_reduction)
+that does not fit into the exponential family paradigm described in
+Section \@ref(casm) below.  But exponential families were there first.
+
+For an introduction to the concept of sufficiency, see Section 4 of
+@notes-5421-expfam-i.
+
+\subsubsection{Canonical Statistics are Sufficient}
+
+Since the likelihood only depends on the data through the canonical statistic,
+the canonical statistic is always a (vector) *sufficient statistic*.
+This is one direction of the [Neyman-Fisher factorization theorem](https://en.wikipedia.org/wiki/Sufficient_statistic#Fisher%E2%80%93Neyman_factorization_theorem).
+
+\subsubsection{Independent and Identically Distributed Sampling} \label{sec:iid}
+
+Suppose $y_1$, $y_2$, $\ldots,$ $y_n$ are
+independent and identically distributed (IID) random variables
+from an exponential family with log
+likelihood for sample size one \@ref(eq:logl).
+Then the log likelihood for sample size $n$ is
+\begin{align*}
+   l_n(\theta)
+   & =
+   \sum_{i = 1}^n \bigl[ \langle y_i, \theta \rangle - c(\theta) \bigr]
+   \\
+   & = \left\langle \sum_{i = 1}^n y_i, \theta \right\rangle - n c(\theta)
+\end{align*}
+From this it follows that IID sampling converts one exponential family
+into another exponential family with
+
+ * canonical statistic vector $\sum_i y_i$, which is the sum of the
+   canonical statistic vectors for the samples,
+
+ * canonical parameter vector $\theta$, which is the same as the
+   canonical parameter vector for the samples,
+
+ * cumulant function $n c(\,\cdot\,)$, which is $n$ times the
+   cumulant function for the samples,
+
+ * mean value parameter vector $n \mu$, which is $n$ times the
+   mean value parameter $\mu$ for the samples.
+
+Many familiar "addition rules" for
+[brand name distributions](http://www.stat.umn.edu/geyer/5101/notes/brand.pdf)
+are special cases of this
+
+ * sum of IID binomial is binomial,
+
+ * sum of IID Poisson is Poisson,
+
+ * sum of IID negative binomial is negative binomial,
+
+ * sum of IID gamma is gamma,
+
+ * sum of IID multinomial is multinomial, and
+
+ * sum of IID multivariate normal is multivariate normal.
+
+The point is that the dimension reduction from $y_1$, $y_2$, $\ldots,$ $y_n$
+to $\sum_i y_i$ is a *sufficient dimension reduction*.
+It loses no information about the parameters assuming the model is correct.
+
+\subsubsection{Canonical Affine Submodels} \label{sec:casm}
+
+Suppose we parameterize a submodel of our exponential family with
+parameter transformation
+\begin{equation}
+   \theta = a + M \beta
+   (\#eq:affine)
+\end{equation}
+where
+
+ * $a$ is a known vector, usually called the *offset vector*,
+
+ * $M$ is a known matrix, usually called the *model matrix*
+   (also called the *design matrix*),
+
+ * $\theta$ is the original parameter, and
+
+ * $\beta$ is the *canonical affine submodel canonical parameter*
+   (also called *coefficients vector*).
+
+The terms *offset vector*, *model matrix*, and *coefficients*
+are those used by R functions `lm` and `glm`.  The term *design matrix*
+is widely used although it doesn't make much sense for data that do not
+come from a designed experiment (but language doesn't have to make sense
+and often doesn't).  The terminology *canonical affine submodel* is from
+@aster1.
+
+For a linear model (fit by R function `lm`) $\theta$ is the mean vector
+$\theta = E_\theta(y)$.
+For a generalized linear model (fit by R function `glm`) $\theta$ is the
+so-called the *linear predictor*, and it not usually called a parameter, even
+though it is a parameter.
+The transformation \@ref(eq:affine) is usually called "linear",
+but @aster1 decided to call it "affine".
+The issue is that there are two meanings of
+[linear](https://en.wikipedia.org/wiki/Linear_function)
+
+ * in calculus and all mathematics below that level (including before college)
+   a linear function is a function whose graph is a straight line, but
+
+ * in linear algebra and all mathematics above that level (including real
+   analysis and functional analysis, which are just advanced calculus
+   with another name) a linear function is a function that preserves
+   vector addition and scalar multiplication, in particular, if $f$ is
+   a linear function, then $f(0) = 0$.
+
+In linear algebra and all mathematics above that level, if we need to
+refer to the other notion of linear function we call it an *affine function*.
+An affine function is a linear function plus a constant function, where
+"linear" here means the notion from linear algebra and above.
+
+All of this extends to arbitrary transformations between vector spaces.
+An affine function from one vector space to another is a linear function
+plus a constant function.
+
+So \@ref(eq:affine) is an *affine change of parameter* in the language
+of linear algebra and above and a *linear change of parameter* in the
+language of calculus and below.  It is also a *linear change of parameter*
+in the language of linear algebra and above in the special case $a = 0$
+(no offset).  The fact that \@ref(eq:affine) is almost always used when $a = 0$
+(offsets are very rarely used) may contribute to the tendency to
+call this parameter transformation "linear".
+
+It is not just in applications that offsets rarely appear.
+Even theoreticians who pride themselves on their knowledge
+of advanced mathematics usually ignore offsets.
+The familiar formula $\hat{\beta} = (M^T M)^{- 1} M^T y$ for the
+least squares estimator is missing an offset $a$.
+
+Another reason for confusion between the two notions of "linear" is that
+for simple linear regression (R command `lm(y ~ x)`), the *regression function*
+is affine (linear in the lower-level notion).  But this is applying "linear"
+in the wrong context.
+
+> It's called "linear regression" because it's linear in the
+> regression coefficients, not because it is linear in $x$.
+>
+> — Werner Stutzle
+
+If we change the model to quadratic regression
+(R command `lm(y ~ x + I(x^2))`), then the regression function is quadratic
+(nonlinear) but the model is still a *linear model* fit by R function `lm`.
+Another way of saying this is some people think of simple linear regression
+as being linear in the lower-level sense because it has an intercept,
+but, as sophisticated statisticians, we know that having an intercept
+does not put an $a$ in equation \@ref(eq:affine), it adds a column to $M$
+(all of whose components are ones).
+
+Statisticians generally ignore this confusion in terminology.  Most clients
+of statistics, including most scientists, do not take linear algebra
+and math classes beyond that, so we statisticians use "linear"
+in the lower-level sense when
+talking to clients.  I myself use "linear" in the lower-level sense in Stat
+5101 and 5102, a master's level service course in theoretical probability
+and statistics.  Except we are inconsistent.  When we say "linear model"
+we usually
+mean \@ref(eq:affine) with $a = 0$ so $(M^T M)^{- 1} M^T y$ makes sense,
+and that is the higher-level sense of "linear".
+
+Hence @aster1 decided to introduce
+the term *canonical affine submodel* for what was already familiar but
+either had no name or was named with confusing terminology.
+
+In the list following \@ref(eq:affine), "known" means nonrandom.
+In regression analysis we allow $M$ to depend on covariate data,
+and saying $M$ is nonrandom means we are treating covariate data as fixed.
+If the covariate data happen to be random, we say we are doing the
+analysis conditional on the observed values of the covariate data
+(which is the same as treating these data as fixed and nonrandom).
+In other words, the statistical model is for the conditional distribution
+of the response $y$ given the covariate data, and
+the (marginal) distribution of the covariate data *is not modeled*.
+Thus to be fussily pedantic we should write
+$$
+   E_\theta(y \mid \text{the part of the covariate data that is random, if any})
+$$
+everywhere instead of $E_\theta(y)$, and similarly
+for $\mathop{\rm var}\nolimits_\theta(y)$ and so forth.
+But we are not going to do that, and almost no one does that.
+We can also allow $a$ to depend on covariate data
+(but almost no one does that).
+
+Now we come to the point of this
+section.  The log likelihood for the canonical affine submodel is
+\begin{align*}
+   l(\beta)
+   & =
+   \langle y, a + M \beta \rangle - c(a + M \beta)
+   \\
+   & =
+   \langle y, a \rangle + \langle y, M \beta \rangle - c(a + M \beta)
+\end{align*}
+and we may drop the term $\langle y, a \rangle$ from the log likelihood
+because it does not contain the parameter $\beta$ giving
+$$
+   l(\beta) = \langle y, M \beta \rangle - c(a + M \beta)
+$$
+and because
+$$
+   \langle y, M \beta \rangle = y^T M \beta = (M^T y)^T \beta
+   = \langle M^T y, \beta \rangle
+$$
+we finally get log likelihood for the canonical affine submodel
+\begin{equation}
+   l(\beta) = \langle M^T y, \beta \rangle - c_\text{sub}(\beta)
+   (\#eq:logl-casm)
+\end{equation}
+where
+$$
+   c_\text{sub}(\beta) = c(a + M \beta)
+$$
+From this it follows that the change of parameter \@ref(eq:affine)
+converts one exponential family into another exponential family with
+
+ * canonical statistic vector $M^T y$,
+
+ * canonical parameter vector $\beta$,
+
+ * cumulant function $c_\text{sub}$, and
+
+ * mean value parameter $\tau = M^T \mu$, where $\mu$ is the mean value
+   parameter of the original model.
+
+If $\Theta$ is the canonical parameter space of the original model, then
+$$
+   B = \{\, \beta : a + M \beta \in \Theta \,\}
+$$
+is the canonical parameter space of the canonical affine submodel.
+If the original model is full, then so is the canonical affine submodel.
+If the original model is regular full, then so is the canonical affine submodel.
+
+There are many points to this section.  It is written the way it is because
+of aster models [@aster1], but it applies
+to linear models, generalized linear models, and log-linear models for
+categorical data too, hence to the majority of applied statistics.
+But the point of this section that gets it put in its supersection
+is that the dimension reduction from $y$ to $M^T y$
+is a *sufficient dimension reduction*.
+It loses no information about $\beta$ assuming this submodel is correct.
+
+\subsubsection{The Pitman–Koopman–Darmois Theorem}
+
+Nowadays, exponential families are so important in so many parts
+of theoretical statistics that their origin has been forgotten.
+They were invented to be the class of statistical models described
+by the [Pitman–Koopman–Darmois theorem](https://en.wikipedia.org/wiki/Exponential_family#Classical_estimation:_sufficiency), which says (roughly) that
+the only statistical models having the sufficient dimension reduction property
+in IID sampling described in Section \@ref(iid) above are exponential families.
+In effect, it turns that section from if to if and only if.
+
+But the reason for the "roughly" is that as just stated with no conditions,
+the theorem is false.  Here is a counterexample.
+For an IID sample from the $\text{Uniform}(0, \theta)$ distribution,
+the maximum likelihood estimator (MLE)
+is $\hat{\theta}_n = \max\{y_1, \ldots, y_n\}$
+and this is easily seen to be a sufficient statistic (the Neyman-Fisher
+factorization theorem again) but $\text{Uniform}(0, \theta)$ is not an
+exponential family.
+
+So there have to be side conditions to make the theorem true.
+Pitman, Koopman, and Darmois independently (not as co-authors) in 1935 and 1936
+published theorems that said under two side conditions,
+
+ * the distribution of the canonical statistic is continuous and
+
+ * the support of the distribution of the canonical statistic does not
+   depend on the parameter,
+
+then any statistical model with the sufficient dimension reduction property
+in IID sampling is an exponential family.
+(Obviously, $\text{Uniform}(0, \theta)$ violates the second side condition).
+
+Later, other authors published theorems with more side conditions that
+covered the discrete case.  But the side conditions for those are really
+messy so those theorems are not so interesting.
+
+Nowadays exponential families are so important for so many reasons
+(not all of them mentioned in this document) that no one any longer
+cares about these theorems.  We only want the if part of the if and only if,
+which is covered in Section \@ref(iid) above.
+
+\subsection{Observed Equals Expected} \label{sec:observed-equals-expected}
+
+The usual procedure for maximizing the log likelihood is to differentiate
+it, set it equal to zero, and solve for the parameter.  The derivative of
+\@ref(eq:logl) is
+\begin{equation}
+   \nabla l(\theta) = y - \nabla c(\theta)
+   = y - E_\theta(Y)
+   (\#eq:cumfun-first-deriv)
+\end{equation}
+(Here and throughout this section $Y$ is a random vector
+having the distribution of the canonical statistic and $y$ is
+the observed value of the canonical statistic.)
+So the MLE $\hat{\theta}$ is characterized by
+\begin{equation}
+   y = E_{\hat{\theta}}(Y)
+   (\#eq:observed-equals-expected)
+\end{equation}
+
+We can say a lot more than this.
+Cumulant functions are lower semicontinuous convex functions
+[@barndorff-nielsen, Theorem 7.1].  Hence log likelihoods
+of regular full exponential families are concave functions
+that are differentiable everywhere in the canonical parameter space.
+Hence \@ref(eq:cumfun-first-deriv) being equal to zero is a necessary
+and sufficient condition for $\theta$ to maximize \@ref(eq:logl)
+(@rockafellar-wets, Theorem 2.14).
+Hence \@ref(eq:observed-equals-expected) is a necessary and sufficient
+condition for $\hat{\theta}$ to be a MLE.
+
+The MLE need not exist and need not be unique.
+
+The MLE does not exist if the observed value of the canonical statistic is on
+the boundary of its support in the following sense, there exists a vector
+$\delta \neq 0$ such that $\langle Y - y, \delta \rangle \le 0$ holds
+almost surely
+and $\langle Y - y, \delta \rangle = 0$ does not hold almost surely
+[@geyer-gdor, Theorems 1, 3, and 4].
+When the MLE does not exist in the classical sense, it may exist in an
+extended sense as a limit of distributions in the original family,
+but that is a story for another time (see @geyer-gdor and
+@notes-5421-expfam-ii for more on this subject).
+
+The MLE is not unique if there exists a $\delta \neq 0$ such that
+$\langle Y - y, \delta \rangle = 0$ holds almost surely
+[@geyer-gdor].
+In theory, nonuniqueness of the MLE for a full exponential family is not
+a problem because every MLE corresponds to the same probability distribution
+[@geyer-gdor, Theorem 1 and Corollary 2], so the MLE canonical
+parameter vector is not unique (if any MLE exist),
+but the MLE probability distribution is unique (if it exists)
+and the MLE mean value parameter is unique (if it exists).
+
+It is always possible to arrange for uniqueness of the MLE.
+Simply arrange that the distribution of the canonical statistic have full
+dimension (not be concentrated on a hyperplane).
+
+But one does not want to do this too early in the data analysis process.
+In the lecture notes about Bayesian inference and Markov chain Monte Carlo
+[@notes-3701-mcmc-bayes] we used a nonidentifiable parameterization for
+the example (volleyball standings) for the frequentist analysis and this
+caused no problems because the computer (R function `glm`) knew how to deal
+with it.  This same nonidentifiable parameterization when used in the
+Bayesian analysis allowed us to easily specify a prior distribution that
+did not favor any team.
+
+This sort of data provides simple examples of when the MLE does not exist
+in the classical sense.  In the example cited above one team did not win
+any matches, and the MLE for that team consequently does not exist.
+We set its MLE to be minus infinity, but that is a mathematical fiction.
+Minus infinity is not an allowed parameter value for an exponential family
+(not a real number).
+
+But all of this about nonexistence and nonuniqueness of the MLE is not
+the main point of this section.  The main point is
+that \@ref(eq:observed-equals-expected) characterizes the MLE when it exists
+and whether or not it is unique.
+
+ * The MLE in an exponential family satisfies "observed equals expected".
+   The MLE for the mean value parameter vector satisfies $\hat{\mu} = y$ or
+   $y = E_{\hat{\theta}}(y)$.
+
+More precisely, we should say the observed value of the *canonical statistic
+vector* equals its expected value under the MLE distribution (which is unique
+if it exists).  It is not the observed value of anything whatsoever that equals
+its MLE expected value.
+
+The observed-equals-expected property is one of the keys to interpreting
+MLE's for exponential families.  Strangely, this is considered very important
+in some areas of statistics and not mentioned at all in other areas.
+
+In categorical data analysis, it is considered key.  The MLE for a
+hierarchical log-linear model for categorical data satisfies observed
+equals expected: the marginals of the table corresponding to the terms in the
+model are equal to their MLE expected values, and those marginals are the
+canonical sufficient statistics.  So this gives a complete characterization
+of maximum likelihood for these models, and hence a complete understanding
+in a sense.
+(See also Section \@ref(maximum-entropy) below.)
+
+In regression analysis, it is ignored.  The most widely used linear and
+generalized linear models are exponential families: linear models,
+logistic regression, and Poisson regression with log link.  Thus maximum
+likelihood satisfies the observed-equals-expected property.
+
+ * The MLE for a canonical affine submodel satisfies
+   "observed equals expected".  If $y$ is the response vector and $M$ is the
+   model matrix, then the MLE for the submodel mean value parameter vector
+   satisfies $\hat{\tau} = M^T y$ or $M^T y = M^T E_{\hat{\beta}}(y)$.
+
+More precisely, we should say the observed value of
+the *submodel canonical statistic vector* equals its expected value under
+the MLE distribution (which is unique if it exists).
+It is not the observed value of anything whatsoever that equals
+its MLE expected value.
+
+So this tells us that the submodel canonical statistic vector $M^T y$
+is crucial to understanding linear and generalized linear models
+(and aster models, @aster1)
+just like it is for hierarchical log-linear models for categorical data.
+But do regression books even mention this?  Not that your humble author
+knows of.
+
+Let's check this for linear models with no offset where we have
+original model mean value parameter
+$$
+   \mu = E(y) = M \beta
+$$
+and MLE for the submodel canonical parameter $\beta$
+$$
+   \hat{\beta} = (M^T M)^{- 1} M^T y
+$$
+and consequently
+$$
+   M^T M \hat{\beta} = M^T y
+$$
+and by invariance of maximum likelihood ([slides 100 ff. of
+deck 3](http://www.stat.umn.edu/geyer/5102/slides/s3.pdf#page=100)
+of @notes-5102)
+$$
+   \hat{\mu} = M \hat{\beta}
+$$
+so
+$$
+   M^T \hat{\mu} = M^T y
+$$
+which we claim is the key to understanding linear models.
+But regression textbooks never mention it.
+So who is right, the authors of regression textbooks or the authors of
+categorical data analysis textbooks?  Our answer is the latter.
+$M^T y$ is important.
+
+Another way people sometimes say this is that every MLE in a regular full
+exponential family is a method of moments estimator, but not just any old
+method of moments estimator.  It is the method of moments estimator that
+sets the expectation of the *canonical statistic vector* equal to its
+observed value and solves for the parameter.  For example, for linear models,
+the method of moments estimator we want sets
+$$
+   M^T M \beta = M^T y
+$$
+and solves for $\beta$.
+And being precise, we need the method of moments estimator that sets the
+*canonical statistic vector for the model being analyzed* equal to its
+expected value.  For a canonical affine submodel, that is the *submodel*
+canonical statistic vector $M^T y$.
+
+But there is nothing special here about linear models except that they
+have a closed form expression for $\hat{\beta}$.
+In general, we can only determine $\hat{\beta}$ as a function of $M^T y$
+by numerically maximizing the likelihood using a computer optimization
+function.  But we always have "observed equals expected" up to the inaccuracy
+of computer arithmetic.
+
+And usually "observed equals expected" is the only simple equality
+we know about maximum likelihood in regular full exponential families.
+
+engraved on his tombstone.  Here $S$ is again entropy, $k$ is a physical
+constant now known as Boltzmann's constant, and $W$ is probability
+(*Wahrscheinlichkeit* in German).  Of course, this is not probability
+in general, but probability in certain physical systems.
+
+Along with this came the interpretation that entropy does not always increase.
+Physical systems necessarily spend more time in more probable states and
+less time in less probable states.  Increase of entropy is just the inevitable
+move from less probable to more probable on average.  At the microscopic level
+entropy fluctuates as the system moves through each state according to its
+probability.
+
+In mid twentieth century
+[Claude Shannon](https://en.wikipedia.org/wiki/Claude_Shannon)
+recognized the relation between entropy and information.
+The same formulas that define entropy statistically define information
+as negative entropy (so minus a constant times log probability).
+He used this to bound how much signal could be put through a noisy
+communications channel.
+
+A little later [Kullback and
+Leibler](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence)
+imported Shannon's idea into statistics, defining what we now call
+Kullback-Leibler information.
+
+What does maximum likelihood try to do theoretically?  It tries to maximize
+the expectation of the log likelihood function, which is the
+Kullback-Leibler information function, that maximum being the true unknown
+parameter value if the model is identifiable [@wald].
+There is also a connection between [Kullback-Leibler information
+and Fisher information](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Fisher_information_metric).
+
+A little later
+[Edwin Jaynes](https://en.wikipedia.org/wiki/Edwin_Thompson_Jaynes)
+recognized
+the connection between entropy or negative Kullback-Leibler information
+and exponential families.  Exponential families maximize entropy subject to
+constraints.  Fix a probability distribution $Q$ and a random vector $Y$ on
+the probability space of that distribution.  Then for each vector $\mu$ find
+the probability distribution $P$ that maximizes entropy (minimizes
+Kullback-Leibler information) with respect to $Q$ subject to $E_P(Y) = \mu$.
+If the maximum exists, call it $P_\mu$.  Then the collection of all such
+$P_\mu$ is a full exponential family having canonical statistic $Y$ and mean
+value parameter $\mu$ (for a proof see @notes-8931-aster [Deck 2, Slides 176
+ff.](http://www.stat.umn.edu/geyer/8931aster/slides/s2.pdf#page=176)).
+
+Jaynes is not popular among statisticians because his maximum entropy
+idea became linked with so-called
+[maxent modeling](http://www.cs.cmu.edu/~aberger/maxent.html)
+which statisticians for the most part have ignored.
+
+But in the context of exponential families, maximum entropy is powerful.
+It says you start with the canonical statistic.  If you start with a canonical
+statistic that is an affine function of the original canonical statistic
+of an exponential family, then the canonical affine submodel maximizes
+entropy subject to the distributions in the canonical affine submodel
+having the mean value parameters they do.  Every other aspect of those
+distributions is just randomness in the sense of maximum entropy or
+minimum Kullback-Leibler information.  Thus the (submodel)
+mean value parameter tells you everything interesting about a canonical
+affine submodel.
+
+When connected with observed equals expected
+(Section \@ref(observed-equals-expected) above), this is a very powerful
+principle.  Observed equals expected says maximum likelihood estimation
+matches exactly the submodel canonical statistic vector to its observed value.
+Maximum entropy says nothing else matters, everything important, all the
+*information* about the parameter is in the MLE.  All else is randomness
+(in the sense of maximum entropy).
+
+Admittedly the one time I have made this argument in a published article
+[@geyer-thompson] it was not warmly received.
+But it was a minor point of that article.  Perhaps this section makes
+a better case.
+
+This is the reason why the model for the
+[MCMC and volleyball](http://www.stat.umn.edu/geyer/3701/notes/mcmc-bayes.html#volleyball) is what it is.
+The official Big Ten conference standings only pay attention to team wins.
+Thus we use them as canonical statistics.
+It is true that we add one statistic the conference does not use,
+the total number of home wins, because we want home field
+advantage in the model because it obviously exists (it is highly statistically
+significant every year in every sport), and leaving out home field advantage
+would inflate the variance of estimates.
+
+It is amazing (to me) that this procedure fully and correctly adjusts
+sports standings for strength of schedule.  It is strange (to me) that only
+one sport, college ice hockey, uses this procedure, which in that context they
+call [KRACH](https://www.uscho.com/rankings/krach/d-i-men/), and they do
+not use it alone, but as just one factor in a mess of procedures that have
+no statistical justification.
+
+\subsection{Multivariate Monotonicity} \label{sec:multivariate-monotonicity}
+
+A link function,
+which goes componentwise from mean value parameters
+to canonical parameters for a generalized linear model
+that is an exponential family (linear models, logistic regression,
+Poisson regression with log link) is *univariate monotone*.
+
+This does not generalize to exponential families with dependence among
+components of the response vector like aster models [@aster1],
+Markov spatial point processes
+(@geyer-moller and @notes-8501-points),
+Markov spatial lattice processes
+[@notes-8501-lattice] or even to log-linear models for contingency
+tables when multinomial or product multinomial sampling is assumed.
+
+Instead we have *multivariate monotonicity*.
+This is not a concept statisticians are familiar with.
+It does not appear in real analysis, functional analysis,
+or probability theory.
+It comes from convex analysis.
+@rockafellar-wets have a whole chapter on the
+subject (Chapter 12).  There are many equivalent characterizations.
+We will only discuss two of them.
+
+A function $f$ from one vector space to another is *multivariate monotone* if
+$$
+   \langle f(x) - f(y), x - y \rangle \ge 0, \qquad \text{for all $x$ and $y$}
+$$
+and *strictly multivariate monotone* if
+$$
+   \langle f(x) - f(y), x - y \rangle > 0, \qquad \text{for all $x$ and $y$
+   such that $x \neq y$}
+$$
+(@rockafellar-wets, Definition 12.1).
+
+The reason this is important to us is that the gradient mapping of
+a convex function is multivariate monotone (@rockafellar-wets,
+Theorem 12.17, indeed a differentiable function is convex
+if and only if its gradient mapping is multivariate monotone).
+We have differentiable convex functions in play: cumulant functions
+(@barndorff-nielsen, Theorem 7.1)
+Also cumulant functions of regular full exponential families are
+differentiable everywhere in their canonical parameter spaces \@ref(eq:full).
+
+So define $h$ by
+$$
+   h(\theta) = \nabla c(\theta), \qquad \theta \in \Theta
+$$
+This maps the canonical parameter space into the space where the canonical
+statistic $y$ and the mean value parameter $\mu$ take values, and defines
+the mapping from canonical to mean value parameter $\mu = h(\theta)$.
+Then $h$ is multivariate monotone.
+Hence if $\theta_1$ and $\theta_2$ are canonical parameter values
+and $\mu_1$ and $\mu_2$ are the corresponding mean value parameter values
+$$
+   \langle \mu_1 - \mu_2, \theta_1 - \theta_2 \rangle \ge 0
+$$
+Moreover if the canonical parameterization is identifiable, $h$ is
+*strictly multivariate monotone*
+$$
+   \langle \mu_1 - \mu_2, \theta_1 - \theta_2 \rangle > 0,
+   \qquad \theta_1 \neq \theta_2
+$$
+(@barndorff-nielsen, Theorem 7.1; @geyer-gdor, Theorem 1; @rockafellar-wets,
+Theorem 12.17).
+
+We can see from the way the canonical and mean value parameters
+enter symmetrically, that when the canonical parameterization is identifiable
+so $h$ is invertible [@notes-8112-expfam, Lemma 9] the
+inverse $h^{- 1}$ is also *strictly multivariate monotone*
+$$
+   \langle \mu_1 - \mu_2, \theta_1 - \theta_2 \rangle > 0,
+   \qquad \mu_1 \neq \mu_2
+$$
+
+One final characterization: a differentiable function is
+strictly multivariate monotone if and only if the restriction
+to every line segment in the domain is strictly univariate monotone
+(obvious from the way the definitions above only deal with two points
+in the domain at a time).
+
+Thus we have a "dumbed down" version of strict multivariate monotonicity:
+increasing one component of the canonical parameter vector increases
+the corresponding component of the mean value parameter vector, if the
+canonical parameterization is identifiable.  The other components of $\mu$
+also change but can go any which way.
+
+When specialized to canonical affine submodels (Section \@ref(casm) above)
+strict multivariate monotonicity becomes
+$$
+   \langle \tau_1 - \tau_2, \beta_1 - \beta_2 \rangle > 0,
+   \qquad \beta_1 \neq \beta_2
+$$
+where $\tau_1$ and $\tau_2$ are the submodel mean value parameters
+corresponding to the submodel canonical parameters $\beta_1$ and $\beta_2$.
+When "dumbed down" this becomes:
+increasing one component of the submodel canonical parameter vector $\beta$
+increases the corresponding component of the submodel mean value parameter
+vector $\tau = M^T \mu$, if the submodel canonical parameterization is
+identifiable.  The other components of $\tau$ and components of $\mu$
+also change but can go any which way.
+
+Again we see the key importance of the sufficient dimension reduction
+map $y \mapsto M^T \mu$ and the corresponding original model to canonical
+affine submodel mean value parameter mapping $\mu \mapsto M^T \mu$,
+that is, the importance of thinking of $M^T$ as (the matrix representing)
+a linear transformation.
+
+These "dumbed down" characterizations say that
+strict multivariate monotonicity implies strict univariate monotonicity
+of the restrictions of the function $h$ to line segments in the domain
+*parallel to the coordinate axes* (so only one component of the vector
+changes).
+
+Compare this with our last (not dumbed down) characterization:
+strict multivariate monotonicity holds *if and only if*
+all restrictions of the function $h$ to line segments in the domain
+are strictly univariate monotone (not just line segments parallel
+to the coordinate axes, *all* line segments).
+
+So the "dumbed down" version only varies one component of the canonical
+parameter at a time, whereas the non-dumbed-down version varies all components.
+The "dumbed down" version can be useful when talking to people who have
+never heard of multivariate monotonicity.
+But sometimes the non-dumbed-down concept is needed
+[@aster3, Appendix A].
+There is no substitute for understanding this concept.
+It should be in the toolbox of every statistician.
+
+\subsection{Regression Coefficients are Meaningless}
+
+The title of this section comes from my Stat 5102 lecture notes
+[@notes-5102], [deck 5,
+slide 19](http://www.stat.umn.edu/geyer/5102/slides/s5.pdf#page=19).
+It is stated the way it is for shock value.
+All of the students in that class have previously taken courses where they
+were told how to interpret regression coefficients.
+So this phrase is intended to shock them into thinking they have
+been mistaught!
+
+Although shocking, it refers to something everyone knows.
+Even in the context of linear models (which those 5102 notes are)
+the same model can be specified by different formulas or different model
+matrices.
+
+\subsubsection{Example: Polynomial Regression}
+
+For example
+```{r foo-one}
+foo <- read.table("http://www.stat.umn.edu/geyer/5102/data/ex5-1.txt",
+    header = TRUE)
+lout1 <- lm(y ~ poly(x, 2), data = foo)
+summary(lout1)
+```
+and
+```{r foo-too}
+lout2 <- lm(y ~ poly(x, 2, raw = TRUE), data = foo)
+summary(lout2)
+```
+have different fitted regression coefficients.  But they fit the same model
+```{r foo-same}
+all.equal(fitted(lout1), fitted(lout2))
+```
+
+\subsubsection{Example: Categorical Predictors}
+
+For another example, when there are categorical predictors we must "drop"
+one category from each predictor to get an identifiable model and which one
+we drop is arbitrary.  Thus
+```{r bar-one}
+bar <- read.table("http://www.stat.umn.edu/geyer/5102/data/ex5-4.txt",
+    header = TRUE, stringsAsFactors = TRUE)
+levels(bar$color)
+lout1 <- lm(y ~ x + color, data = bar)
+summary(lout1)
+```
+and
+```{r bar-too}
+bar <- transform(bar, color = relevel(color, ref = "red"))
+lout2 <- lm(y ~ x + color, data = bar)
+summary(lout2)
+```
+have different fitted regression coefficients.  But they fit the same model
+```{r bar-same}
+all.equal(fitted(lout1), fitted(lout2))
+```
+
+\subsection{Example: Collinearity}
+
+Even in the presence of collinearity, where some coefficients must be
+dropped to obtain identifiability (and which one(s) are dropped is arbitrary)
+the mean values are unique, hence the fitted model is unique.
+```{r baz-one, error=TRUE}
+baz <- read.table("http://www.stat.umn.edu/geyer/5102/data/ex5-3.txt",
+    header = TRUE, stringsAsFactors = TRUE)
+x3 <-  with(baz, x1 + x2)
+lout1 <- lm(y ~ x1 + x2 + x3, data = baz)
+summary(lout1)
+```
+and
+```{r baz-too, error=TRUE}
+lout2 <- lm(y ~ x3 + x2 + x1, data = baz)
+summary(lout2)
+```
+have different fitted regression coefficients.  But they fit the same model
+```{r baz-same}
+all.equal(fitted(lout1), fitted(lout2))
+```
+
+\subsubsection{Alice in Wonderland} \label{sec:alice}
+
+After several iterations, this shocking advice became the following
+(@notes-8931-aster, [deck 2,
+slide 41](http://www.stat.umn.edu/geyer/8931aster/slides/s2.pdf#page=41))
+
+> A quote from my master’s level theory notes.
+>
+>> Parameters are meaningless quantities.
+>> Only probabilities and expectations are meaningful.
+>
+> Of course, some parameters are probabilities and expectations,
+> but most exponential family canonical parameters are not.
+>
+> A quote from *Alice in Wonderland*
+>
+>> 'If  there’s  no  meaning  in  it,' said the King,
+>> 'that saves a world of trouble, you know, as we needn't try to find any.’
+>
+> Realizing that canonical parameters are meaningless quantities
+> "saves a world of trouble".  We "needn't try to find any".
+
+Thinking sophisticatedly and theoretically, of course parameters are
+meaningless.  A statistical model is a family $\mathcal{P}$ of probability
+distributions.  How this family is parameterized (indexed) is meaningless.
+If
+$$
+   \mathcal{P}
+   =
+   \{\, P_\theta : \theta \in \Theta \,\}
+   =
+   \{\, P_\beta : \beta \in B \,\}
+   =
+   \{\, P_\varphi : \varphi \in \Phi \,\}
+$$
+are three different parameterizations for the same model, then they are
+all for the same model (duh!).  The fact that parameter estimates in one
+parameterization tell us nothing about estimates in another parameterization
+tells us nothing.
+
+But probabilities and expectations are meaningful.
+For $P \in \mathcal{P}$, both $P(A)$ and $E_P\{g(Y)\}$ depend only on $P$
+not what parameter value is deemed to index it.  And this does not depend
+on what $P$ means, whether we specify $P$ with a probability mass function,
+a probability density function, a distribution function, or a probability
+measure, the same holds: probabilities and expectations only depend on
+the distribution, not how it is described.
+
+Even if we limit the discussion to regular full exponential families,
+any one-to-one affine function of a canonical parameter vector is another
+canonical parameter vector (copied from Section \@ref(expfam) above).
+That's a lot of parameterizations, and which one you choose (or the computer
+chooses for you) is meaningless.
+
+Hence we agree with the King of Hearts in *Alice in Wonderland*.
+It "saves a world of trouble" if we don't try to interpret canonical
+parameters.
+
+It doesn't help those wanting to interpret canonical parameters that
+sometimes the map from canonical to mean value parameters has no closed-form
+expression (this happens in spatial point and lattice processes
+[@notes-8501-lattice] [@notes-8501-points];
+the log likelihood and
+its derivatives can only be approximated by MCMC using the scheme in
+@geyer-thompson and @geyer-mcmcla or has
+a closed-form expression, but it is so fiendishly complicated that
+people have no clue what is going on, although the computer chugs through
+the calculation effortlessly (this happens with aster models, @aster1).
+
+\subsection{Interpreting Exponential Family Model Fits}
+
+We take up the points made above in turn, stressing their impact
+on how users can interpret exponential family model fits.
+
+\subsubsection{Observed Equals Expected}
+\label{sec:observed-equals-expected-in-review}
+
+The simplest and most important property is the observed-equals-expected
+property (Section~\ref(sec:observed-equals-expected} above).
+
+The MLE for the submodel mean value parameter vector
+$\hat{\tau} = M^T \hat{\mu}$
+is exactly equal to the submodel canonical statistic vector
+$M^T y$.
+That's what maximum likelihood in a regular full exponential family *does*.
+
+So understanding $M^T y$ is the most important thing in understanding the
+model.  If $M^T y$ is scientifically (business analytically,
+sports analytically, whatever) interpretable, then the model is interpretable.
+Otherwise, not!
+
+\subsubsection{Sufficient Dimension Reduction}
+\label{sec:sufficient-dimension-reduction-in-review}
+
+The next most important property is sufficient dimension reduction
+(Section~\ref{sec:casm} above).
+
+The submodel canonical statistic vector $M^T y$ is *sufficient*.
+It contains all the information about the parameters that there is in the
+data, assuming the model is correct.
+
+Since $M^T y$ determines
+the MLE for the coefficients vector $\hat{\beta}$ (Section~\ref{sec:casm} above,
+assuming $\beta$ is identifiable),
+and the MLE for every other parameter vector is a one-to-one function
+of $\hat{\beta}$,
+the MLE's for all parameter vectors
+($\hat{\beta}$, $\hat{\theta}$, $\hat{\mu}$, and $\hat{\tau}$)
+are sufficient statistic vectors.
+The MLE for each parameter vector contains all the information about
+parameters that there is in the data, assuming the model is correct.
+
+\subsubsection{Maximum Entropy} \label{sec:maximum-entropy-in-review}
+
+And nothing else matters for interpretation.
+
+Everything else about the model other than what the MLE's say is as random
+as possible (maximum entropy, Section~\ref{sec:maximum-entropy} above) and
+contains no information (sufficiency, just discussed).
+
+\subsubsection{Regression Coefficients are Meaningless}
+\label{sec:regression-coefficients-are-meaningless-in-review}
+
+In particular it "saves a world of trouble" if we realize
+"we needn't try to find any" meaning in coefficients vector $\hat{\beta}$
+(Section~\ref{sec:alice} above).
+
+\subsubsection{Multivariate Monotonicity}
+\label{sec:multivariate-monotonicity-in-review}
+
+But if we do have to say something about the coefficients vector $\hat{\beta}$
+we do have the multivariate-monotonicity property available
+(Section~\ref{sec:multivariate-monotonicity} above).
+
+\subsubsection{The Model Equation}
+
+Most statistics courses that discuss the regression models teach students
+to woof about the *model equation* \eqref{eq:affine}.
+In lower-level courses where students are not expected to understand matrices,
+students are taught to woof about the same thing in other terms
+$$
+   y_i = \beta_1 + \beta_2 x_i + \text{error}
+$$
+and the like.  That is, they are taught to think about the model matrix
+as a linear operator $\beta \mapsto M \beta$ or the same thing in other
+terms.  And another way of saying this is that they are taught to focus
+on the *rows* of $M$.
+
+The view taken here is that this woof is all meaningless because it is
+about meaningless parameters ($\beta$ and $\theta$).  The important
+linear operator to understand is the sufficient dimension reduction operator
+$y \mapsto M^T y$ or, what is the same thing described in other language,
+the original model to submodel mean value transformation operator
+$\mu \mapsto M^T \mu$.
+And another way of saying this is that we should focus
+on the *columns* of $M$.
+
+It is not when you woof about $M \beta$ that you understand and explain the
+model, it is when you woof about $M^T y$ that you understand and explain the
+model.
+
+\subsection{Asymptotics}
+
+A story: when I was a first year graduate student I answered a question
+about asymptotics with "because it's an exponential family" but the teacher
+didn't think that was quite enough explanation.  It is enough, but
+textbooks and courses don't emphasize this.
+
+The "usual" asymptotics of
+maximum likelihood (asymptotically normal, variance inverse Fisher information)
+hold for every regular full exponential family, no other regularity conditions
+are necessary (all other conditions are implied by regular full exponential
+family).  The "usual" asymptotics also hold for all curved exponential families
+by smoothness.  For a proof of this using the usual IID sampling
+and $n$ goes to infinity story see @notes-8112-expfam.
+In fact, these same "usual" asymptotics hold when there is complicated
+dependence and no IID in sight and whatever $n$ goes to infinity story
+can be concocted either makes no sense or yields an intractable problem.
+For that see Sections 1.4 and 1.5 of @geyer-no-n.
+
+And these justify all the hypothesis tests and confidence intervals
+based on these "usual" asymptotics, for example, those
+for generalized linear models that are exponential families and for
+log-linear models for categorical data and for aster models.
+
+\subsection{More on Observed Equals Expected}
+
+\subsubsection{Contingency Tables}
+
+By "contingency tables" we mean data in which all variables are categorical.
+For an example of this let us revisit
+the [seat belt use data](ch9.html#example-seat-belt-use).
+```{r options.width,echo=FALSE}
+options(width = 250)
+```
+```{r seat.belt}
+# clean up R global environment
+rm(list = ls())
+
+count <- c(7287, 11587, 3246, 6134, 10381, 10969, 6123, 6693,
+            996,   759,  973,  757,   812,   380, 1084,  513)
+injury <- gl(2, 8, 16, labels = c("No", "Yes"))
+gender <- gl(2, 4, 16, labels = c("Female", "Male"))
+location <- gl(2, 2, 16, labels = c("Urban", "Rural"))
+seat.belt <- gl(2, 1, 16, labels = c("No", "Yes"))
+
+library(glmbb)
+out <- glmbb(count ~ seat.belt * injury * location * gender,
+    family = "poisson")
+summary(out)
+```
+We will just look at the best model according to AIC having formula
+```{r seat.belt.best}
+f <- summary(out)$results$formula[1]
+f
+```
+With four variables there are four possible three-way interactions,
+but we only have three of the four in this model.
+
+Refit the model.
+```{r seat.belt.best.fit}
+out.best <- glm(as.formula(f), family = poisson)
+
+observed <- xtabs(count ~ seat.belt + injury + location + gender)
+expected <- predict(out.best, type = "response")
+expected <- xtabs(expected ~ seat.belt + injury + location + gender)
+observed.minus.expected <- observed - expected
+names(dimnames(observed))
+apply(observed.minus.expected, 1:3, sum)
+apply(observed.minus.expected, c(1, 2, 4), sum)
+apply(observed.minus.expected, c(1, 3, 4), sum)
+apply(observed.minus.expected, 2:4, sum)
+```
+Indeed we have observed equals expected (up to the accuracy of computer
+arithmetic) for three of the four three-way margins.  Of course, we also
+have observed equals expected for lower order margins of these margins.
+```{r seat.belt.best.lower}
+apply(observed.minus.expected, 1:2, sum)
+apply(observed.minus.expected, c(1, 3), sum)
+apply(observed.minus.expected, c(1, 4), sum)
+apply(observed.minus.expected, 2:3, sum)
+apply(observed.minus.expected, c(2, 4), sum)
+apply(observed.minus.expected, 3:4, sum)
+apply(observed.minus.expected, 1, sum)
+apply(observed.minus.expected, 2, sum)
+apply(observed.minus.expected, 3, sum)
+apply(observed.minus.expected, 4, sum)
+```
+\subsubsection{Categorical Response But Quantitative Predictors}
+
+For an example of observed equals expected in a more general context,
+we revisit the [time of day data](ch4.html#a-poisson-glm-example)
+```{r time.of.day}
+# clean up R global environment
+rm(list = ls())
+
+foo <- read.table("http://www.stat.umn.edu/geyer/5102/data/ex6-4.txt",
+    header = TRUE)
+count <- foo$count
+w <- foo$hour / 24 * 2 * pi
+out <- glm(count ~ I(sin(w)) + I(cos(w)) + I(sin(2 * w)) + I(cos(2 * w)),
+    family = poisson, x = TRUE)
+summary(out)
+```
+
+Check observed equals expected.
+```{r time.of.day.observed.equals.expected}
+m <- out$x
+e <- predict(out, type = "response")
+t(m) %*% (count - e)
+```
+
+OK.  It checks.  But what does it mean?
+
+Let $z$ denote any regressor (column of the model matrix).
+Let $y$ denote the response vector ("observed") and $\hat{\mu}$
+its MLE prediction ("expected").
+
+ * For the `(Intercept)` column, $z$ has all components equal to one.
+
+ * For the `I(sin(w))` column, $z$ has $i$-th component $\sin(w_i)$.
+
+ * And so forth.
+
+Now observed equals expected says $z^T y = z^T \hat{\mu}$
+for each regressor $z$.
+
+In particular, when $z$ is the `(Intercept)` regressor
+(having all components equal to one),
+this says $\sum_i y_i = \sum_i \hat{\mu}_i$.
+
+But we can also divide both sides by $n$ and say $\bar{y} = \bar{\hat{\mu}}$.
+
+So (when there is an "intercept") we can say either the sum or the average
+of the response vector equals the corresponding quantity for its MLE
+expected values.
+
+Now for general $z$ we have $\sum_i z_i y_i = \sum_i z_i \hat{\mu}_i$.
+But (when there is an "intercept") we also know $\bar{y} = \bar{\hat{\mu}}$.
+So we have $\sum_i z_i \bar{y} = \sum_i z_i \bar{\hat{\mu}}$.
+And subtracting this from our other equation gives
+$$
+   \sum_i z_i (y_i - \bar{y})
+   =
+   \sum_i z_i (\mu_i - \bar{\hat{\mu}})
+$$
+But we also have
+\begin{align*}
+   \sum_i (y_i - \bar{y}) = 0
+   \\
+   \sum_i (\mu_i - \bar{\hat{\mu}}) = 0
+\end{align*}
+just by definition of averaging.
+So we also have
+$$
+   \frac{1}{n} \sum_i (z_i - \bar{z}) (y_i - \bar{y})
+   =
+   \frac{1}{n} \sum_i (z_i - \bar{z}) (\mu_i - \bar{\hat{\mu}})
+$$
+So this says the empirical (estimate of) the covariance of $y$ and $z$
+equals its MLE expected value.
+And the same if we substitute "correlation" for "covariance".
+
+This there are many ways to rephrase "observed equals expected".
+The fundamental meaning is $z^T y = z^T \hat{\mu}$ for each regressor $z$.
+But there many other statements that can be derived from that.
+
 \end{document}
 
 ISSUES
